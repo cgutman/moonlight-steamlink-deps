@@ -1,0 +1,24 @@
+version: 0.0.0.{build}
+
+clone_depth: 1
+
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1604
+      OPUS_VERSION: "1.5.2"
+
+install:
+  - sh: 'sudo apt install -y libc6:i386 libstdc++6:i386'
+  - sh: 'git clone --depth=1 https://github.com/ValveSoftware/steamlink-sdk.git $HOME/steamlink-sdk'
+
+before_build:
+  - sh: 'git submodule update --init --recursive'
+
+build_script:
+  - sh: 'STEAMLINK_SDK_PATH=$HOME/steamlink-sdk ./build-opus-steamlink.sh'
+
+after_build:
+  - sh: './archive.sh'
+  - sh: 'appveyor PushArtifact steamlink.zip'
+
+deploy: off

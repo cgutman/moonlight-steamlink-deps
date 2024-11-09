@@ -1,0 +1,3 @@
+[submodule "Ne10"]
+	path = Ne10
+	url = https://github.com/projectNe10/Ne10.git
